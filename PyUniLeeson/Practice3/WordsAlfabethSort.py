@@ -1,0 +1,5 @@
+st = input('Введите предложение: ')
+st2 = st.split(' ')
+st2.sort()
+st3 = ' '.join(st2)
+print(st3)

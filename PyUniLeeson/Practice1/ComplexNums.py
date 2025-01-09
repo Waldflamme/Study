@@ -1,0 +1,8 @@
+num1 = float(input('Enter first complex number real part: '))
+num2 = float(input('Enter first complex number imaginary part: '))
+num3 = float(input('Enter second complex number real part: '))
+num4 = float(input('Enter first complex number imaginary part: '))
+print (complex(num1,num2)+complex(num3,num4))
+print (complex(num1,num2)-complex(num3,num4))
+print (complex(num1,num2)*complex(num3,num4))
+print (complex(num1,num2)/complex(num3,num4))

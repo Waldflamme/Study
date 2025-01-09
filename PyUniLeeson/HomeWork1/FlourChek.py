@@ -1,0 +1,5 @@
+kilo_price = float(input('Enter the price of a kilo of flour: '))
+kilos_in_stock = float(input('Enter the amount of flour in stock in kilos: '))
+kilos_sold = float(input('Enter the amount of flour sold today: '))
+print('Price of all flour at the start of the day: ',kilo_price*kilos_in_stock)
+print('Price of all flour at the end of the day: ',kilo_price*(kilos_in_stock-kilos_sold))

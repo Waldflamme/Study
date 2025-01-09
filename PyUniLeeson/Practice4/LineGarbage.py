@@ -1,0 +1,5 @@
+ln1 = input('Enter the line: ')
+s = ln1.split(' ')
+uniq_words = list(dict.fromkeys(s))
+l = ' '.join(uniq_words)
+print(l)
