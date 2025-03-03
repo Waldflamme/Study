@@ -138,8 +138,9 @@ print()
 print('Задание 1')
 print()
 
-desc_len = pd.DataFrame(pd.Series(recipes['description']).str.len())
-print(desc_len)
+desc_len = recipes['description'].str.len()
+recipes['description_length'] = desc_len
+print(recipes['description_length'])
 
 #recipes['description_length'] = desc_len
 #print(recipes)
