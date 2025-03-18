@@ -1,4 +1,4 @@
-ip = input('Enter IP address in decimal or binary: ')
+ip = input('Enter IP address in decimal or binary: ') #Задание №6
 subnet = int(input('Enter number of subnetworks: '))
 hots = int(input('Enter number of hosts: '))
 

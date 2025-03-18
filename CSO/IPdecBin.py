@@ -1,4 +1,4 @@
-ip = input('Enter IP address in decimal or binary: ')
+ip = input('Enter IP address in decimal or binary: ') #Задание №4
 
 ip_in_lst = ip.split(sep = '.')
 ip_res = []
