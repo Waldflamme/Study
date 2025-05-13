@@ -1,4 +1,4 @@
-class PurchaseNode:
+class PurchaseInfo:
     def __init__(self, name, price, quantity, date):
         self.name = name
         self.price = price
@@ -17,7 +17,7 @@ class PurchaseDoublyConnectedList:
         self.tail = None
 
     def append(self, name, price, quantity, date):
-        node = PurchaseNode(name, price, quantity, date)
+        node = PurchaseInfo(name, price, quantity, date)
         if self.head is None:
             self.head = self.tail = node
         else:

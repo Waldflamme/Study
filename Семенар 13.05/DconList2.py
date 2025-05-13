@@ -1,4 +1,4 @@
-class VisitorNode:
+class VisitorInfo:
     def __init__(self, first_name, last_name, visit_date, exhibits):
         self.first_name = first_name
         self.last_name = last_name
@@ -18,7 +18,7 @@ class MuseumVisitorList:
         self.tail = None
 
     def append(self, first_name, last_name, visit_date, exhibits):
-        node = VisitorNode(first_name, last_name, visit_date, exhibits)
+        node = VisitorInfo(first_name, last_name, visit_date, exhibits)
         if self.head is None:
             self.head = self.tail = node
         else:
