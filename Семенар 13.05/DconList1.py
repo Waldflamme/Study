@@ -17,13 +17,13 @@ class PurchaseDoublyConnectedList:
         self.tail = None
 
     def append(self, name, price, quantity, date):
-        node = PurchaseInfo(name, price, quantity, date)
+        info = PurchaseInfo(name, price, quantity, date)
         if self.head is None:
-            self.head = self.tail = node
+            self.head = self.tail = info
         else:
-            self.tail.next = node
-            node.prev = self.tail
-            self.tail = node
+            self.tail.next = info
+            info.prev = self.tail
+            self.tail = info
 
     def display_forward(self):
         current = self.head

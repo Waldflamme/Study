@@ -18,13 +18,13 @@ class MuseumVisitorList:
         self.tail = None
 
     def append(self, first_name, last_name, visit_date, exhibits):
-        node = VisitorInfo(first_name, last_name, visit_date, exhibits)
+        info = VisitorInfo(first_name, last_name, visit_date, exhibits)
         if self.head is None:
-            self.head = self.tail = node
+            self.head = self.tail = info
         else:
-            self.tail.next = node
-            node.prev = self.tail
-            self.tail = node
+            self.tail.next = info
+            info.prev = self.tail
+            self.tail = info
 
     def display_forward(self):
         print("Список посетителей (по времени входа):")
