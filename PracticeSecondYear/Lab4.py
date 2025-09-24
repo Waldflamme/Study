@@ -3,13 +3,13 @@ from tkinter import messagebox
 import re
 from abc import ABC, abstractmethod
 
-# ПАТТЕРН "ФАБРИЧНЫЙ МЕТОД"
+# Создадим фабрику создания полей для ввода информации
+'''Создаем фабрику для создания и валидации заполнения полей информации
+   по контакту (фабричный метод)'''
 
-class EntryFactory(ABC):
-    """
-    Абстрактная фабрика для создания полей ввода
-    и их проверки (валидации).
-    """
+class EntryFactory(ABC): # Создаем абстрактный базовый класс,
+    # имеющий методы создания поля и его валидации
+
     @abstractmethod
     def create_entry(self, parent):
         """Создаёт виджет Entry внутри родительского контейнера."""
@@ -21,21 +21,23 @@ class EntryFactory(ABC):
         pass
 
 
-# ---------- Конкретные фабрики для каждого типа данных ----------
+'''Создаем классы конкретных продуктов (поля для информации) по контакту'''
 
+# Рассмотрим конкретный продукт на примере поля имени
 class NameEntryFactory(EntryFactory):
-    def create_entry(self, parent):
-        # Поле ввода для имени (ширина 30 символов)
-        return tk.Entry(parent, width=30)
+    def create_entry(self, parent): # Метод создания поля имени
+        # Поле ввода для имени (ширина 50 символов)
+        return tk.Entry(parent, width=50)
 
-    def validate(self, value):
+    def validate(self, value): # Метод валидации информации вводимой в поле имени
         # Имя: только буквы (латиница или кириллица) и пробелы
-        if not value.strip():
+        if not value.strip(): # Проверка на наличие символов в строке
             return False, "Имя не может быть пустым."
-        if not re.match(r"^[A-Za-zА-Яа-яЁё\s]+$", value):
+        if not re.match(r"^[A-Za-zА-Яа-яЁё\s]+$", value): # Проверка, что используются
+            # только разрешенные символы
             return False, "Имя должно содержать только буквы и пробелы."
         return True, ""
-
+'''Далее идут аналогичные классы конкретных продуктов (полей телефона и e-mail) по аналогичному принципу'''
 
 class PhoneEntryFactory(EntryFactory):
     def create_entry(self, parent):
@@ -50,29 +52,30 @@ class PhoneEntryFactory(EntryFactory):
 
 class EmailEntryFactory(EntryFactory):
     def create_entry(self, parent):
-        return tk.Entry(parent, width=30)
+        return tk.Entry(parent, width=50)
 
     def validate(self, value):
-        # Простейшая проверка email
+        # Простая проверка email для демонстрационных целей
         if not re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", value):
             return False, "Некорректный Email."
         return True, ""
 
 
-# ======================================================
-#                  ГЛАВНОЕ ПРИЛОЖЕНИЕ
-# ======================================================
+
+# Функциональная часть приложения
+'''Далее рассмотрим код, описывающий основной функционал приложения. Здесь будет 
+   реализована фабрика полей, созданная выше, а также графический интерфейс приложения.'''
 
 class ContactApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Управление контактами (Фабричный метод)")
+        self.root.title("Управление контактами")
         self.root.geometry("600x400")
 
         # Хранилище контактов: список кортежей (имя, телефон, email)
         self.contacts = []
 
-        # -------------------- Создание интерфейса --------------------
+        # Создание интерфейса
         self._create_widgets()
 
         # Фабрики для удобного доступа при валидации
