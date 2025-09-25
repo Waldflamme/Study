@@ -12,12 +12,12 @@ class EntryFactory(ABC): # Создаем абстрактный базовый 
 
     @abstractmethod
     def create_entry(self, parent):
-        """Создаёт виджет Entry внутри родительского контейнера."""
+        '''Создаёт виджет Entry внутри родительского контейнера.'''
         pass
 
     @abstractmethod
     def validate(self, value):
-        """Проверяет корректность введённого значения."""
+        '''Проверяет корректность введённого значения.'''
         pass
 
 
@@ -64,11 +64,13 @@ class EmailEntryFactory(EntryFactory):
 
 # Функциональная часть приложения
 '''Далее рассмотрим код, описывающий основной функционал приложения. Здесь будет 
-   реализована фабрика полей, созданная выше, а также графический интерфейс приложения.'''
+   реализована фабрика полей, созданная выше, а также графический интерфейс приложения
+   через создание класса приложения.'''
 
 class ContactApp:
     def __init__(self, root):
         self.root = root
+        # Организация основного окна интерфейса программы
         self.root.title("Управление контактами")
         self.root.geometry("600x400")
 
@@ -85,12 +87,18 @@ class ContactApp:
             "email": EmailEntryFactory()
         }
 
-    # ---------- Создание всех виджетов ----------
+    # Создание всех виджетов
     def _create_widgets(self):
-        # ----- Поля ввода -----
+
+        # Поля ввода
+        # Создание поля ввода имени
+        # Создание текстовой метки Имя
         tk.Label(self.root, text="Имя:", font=("Arial", 11)).pack(pady=(10, 0))
+        # Создание поля ввода с использованием фабрики
         self.name_entry = NameEntryFactory().create_entry(self.root)
+        # Размещение поля ввода
         self.name_entry.pack()
+        '''Остальные поля ввода создаются по аналогии'''
 
         tk.Label(self.root, text="Телефон:", font=("Arial", 11)).pack(pady=(10, 0))
         self.phone_entry = PhoneEntryFactory().create_entry(self.root)
@@ -100,10 +108,12 @@ class ContactApp:
         self.email_entry = EmailEntryFactory().create_entry(self.root)
         self.email_entry.pack()
 
-        # ----- Кнопки действий -----
-        btn_frame = tk.Frame(self.root)
-        btn_frame.pack(pady=15)
+        # Кнопки действий
+        btn_frame = tk.Frame(self.root) # Создаем фрейм под кнопки действий
+        btn_frame.pack(pady=15) # Размещаем фрейм
 
+        '''Добавляем кнопки во фрейм. Далее ниже код, создающий и размещающий кнопки с 
+           заданным функционалом во фрейме.'''
         tk.Button(btn_frame, text="Добавить контакт",
                   command=self.add_contact).grid(row=0, column=0, padx=5)
         tk.Button(btn_frame, text="Показать контакты",
@@ -113,27 +123,33 @@ class ContactApp:
         tk.Button(btn_frame, text="Удалить выбранный",
                   command=self.delete_selected).grid(row=0, column=3, padx=5)
 
-        # ----- Список контактов (Listbox) -----
+        # Список контактов (Listbox)
         # Используем Listbox вместо Text для возможности выбора элемента
+        # Создаем текстовую метку с пояснением
         tk.Label(self.root, text="Список контактов:", font=("Arial", 11)).pack()
+        # Создаем поле с выбираемыми элементами, в котором будут отображаться контакты.
         self.listbox_contacts = tk.Listbox(self.root, width=80, height=10)
+        # Размещаем поле в окне
         self.listbox_contacts.pack(pady=10)
 
-    # ======================================================
-    #                    ЛОГИКА ПРИЛОЖЕНИЯ
-    # ======================================================
+    # Основной функционал приложения
 
     def add_contact(self):
-        """Добавить новый контакт после проверки данных."""
+        '''Добавить новый контакт после проверки данных.
+           Присваеваем переменным значения, вводимые в поле ввода для дальнейшей валидации.'''
         name = self.name_entry.get().strip()
         phone = self.phone_entry.get().strip()
         email = self.email_entry.get().strip()
 
-        # --- Валидация полей через фабрики ---
+        # Валидация полей через фабрики
+        # Обращаемся к методу валидации конкретного продукта из фабрики через заранее созданный
+        # объект связи с фабриками.
         valid_name, msg = self.factories["name"].validate(name)
+        # Вывод ошибки в случае выполнения условий из метода валидации в фабрике создания поля ввода
         if not valid_name:
             messagebox.showerror("Ошибка", msg)
             return
+        '''Аналогично для остальных полей.'''
 
         valid_phone, msg = self.factories["phone"].validate(phone)
         if not valid_phone:
@@ -145,9 +161,11 @@ class ContactApp:
             messagebox.showerror("Ошибка", msg)
             return
 
-        # --- Добавление контакта в список ---
+        # Добавление контакта в список
         self.contacts.append((name, phone, email))
+        # Вывод сообщения о внесении контакта
         messagebox.showinfo("Успех", "Контакт добавлен!")
+        # Очистка полей ввода
         self.clear_fields()
 
         # Автоматически обновим список в Listbox
@@ -156,9 +174,11 @@ class ContactApp:
     def show_contacts(self):
         """Отобразить все контакты в Listbox."""
         self.listbox_contacts.delete(0, tk.END)  # Очистить список
+        # Вывод сообщения об отсутствии контактов, если контактов в списке нет
         if not self.contacts:
             self.listbox_contacts.insert(tk.END, "Список контактов пуст.")
         else:
+            # Вывод контактов в поле отображения контактов с нумерацией
             for idx, (name, phone, email) in enumerate(self.contacts, start=1):
                 # Каждая строка содержит порядковый номер и данные
                 self.listbox_contacts.insert(tk.END,
@@ -167,20 +187,25 @@ class ContactApp:
 
     def clear_fields(self):
         """Очистить все поля ввода."""
+        # Удаление введенных символов из полей ввода с первого по последний
+        # для всех полей
         self.name_entry.delete(0, tk.END)
         self.phone_entry.delete(0, tk.END)
         self.email_entry.delete(0, tk.END)
 
     def delete_selected(self):
-        """
-        Удалить выбранный в Listbox контакт.
+        '''
+        Удаление выбранного в Listbox контакта.
         Если не выбран или список пуст — показать предупреждение.
-        """
-        selection = self.listbox_contacts.curselection()  # Индексы выбранных строк
+        '''
+        # Присваеваем переменной индекс выбранного элемента в Listbox.
+        # Если переменная не выбрана, выводится сообщение об ошибке.
+        selection = self.listbox_contacts.curselection()
         if not selection:
             messagebox.showwarning("Внимание", "Выберите контакт для удаления.")
             return
-
+        # Проверяем наличие элементов в Listbox. Если нулевой элемент отсутствует, то
+        # выводим сообщение об отсутствии контактов
         index = selection[0]  # Берём первый выбранный элемент
         if not self.contacts:
             messagebox.showwarning("Внимание", "Список контактов пуст.")
@@ -192,6 +217,7 @@ class ContactApp:
         # индекс элемента соответствует индексу контакта в списке.
         del self.contacts[index]
 
+        # Отображение сообщения об удалении контакта.
         messagebox.showinfo("Удалено", "Контакт удалён.")
         self.show_contacts()  # Обновляем отображение
 
@@ -199,6 +225,6 @@ class ContactApp:
 
 # Запуск приложения
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = ContactApp(root)
-    root.mainloop()
+    root = tk.Tk() # Создание основного окна приложения
+    app = ContactApp(root) # Инициализация основного функционала в окне приложения
+    root.mainloop() # Запуск приложения

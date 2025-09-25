@@ -34,7 +34,7 @@ label_input.pack(pady=5) # Размещение элемента (текстов
 # пикселей по вертикали от верхней границы окна
 
 '''Создание поля ввода исходной температуры с заданием цвета текста, фона и
-   курсора (fg, bg, insertbackground соответственно'''
+   курсора (fg, bg, insertbackground соответственно)'''
 entry_input = tk.Entry(
     root, width=20, font=("Arial", 12),
     fg="black", bg="white", insertbackground="black"
